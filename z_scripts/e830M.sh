@@ -1,15 +1,15 @@
 #!/bin/bash
-export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
-export WORLD_SIZE=8
+export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7,8,9
+export WORLD_SIZE=10
 
-dataset=Gigaspeech
+dataset=mixed_music_speech_100
 mkdir -p ./logs/${dataset}
 
 exp_root="../exp_results"
 exp_name=e830M_ssrspeech
-dataset_dir="../English/Gigaspeech" # chage to your path
-encodec_codes_folder_name="encodec_16khz_4codebooks"
-
+dataset_dir="../data/mixed_music_speech_100" # chage to your path
+encodec_codes_folder_name="../data/mixed_music_speech_100/wmencodec"
+load_model_path="../../../models/SSR-Speech-English/English.pth"
 export CUDA_LAUNCH_BLOCKING=1 # for debugging
 export TORCH_USE_CUDA_DSA=1
 
@@ -72,4 +72,5 @@ torchrun --nnodes=1 --rdzv-backend=c10d --rdzv-endpoint=localhost:41977 --nproc_
 --dynamic_batching 1 \
 --dataset $dataset \
 --exp_dir "${exp_root}/${dataset}/${exp_name}" \
---dataset_dir ${dataset_dir}
+--dataset_dir ${dataset_dir} \
+--load_model_from 

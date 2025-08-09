@@ -1,5 +1,5 @@
 # @ hwang258@jh.edu
-
+# v2
 import os
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 os.environ["USER"] = "root" # TODO change this to your username
@@ -28,7 +28,19 @@ from num2words import num2words
 import uuid
 import opencc
 import nltk
-nltk.download('punkt')
+try:
+    nltk.data.find('tokenizers/punkt')
+    print("punkt tokenizer already downloaded")
+except LookupError:
+    print("Downloading punkt tokenizer...")
+    import socket
+    socket.setdefaulttimeout(30)
+    
+    try:
+        nltk.download('punkt', quiet=True)
+    except Exception as e:
+        print(f"Failed to download punkt: {e}")
+        print("Please manually download punkt data")
 
 def seed_everything(seed):
     os.environ['PYTHONHASHSEED'] = str(seed)
@@ -195,7 +207,7 @@ def main(args):
         
     # Initialize models
     filepath = os.path.join(args.model_path)
-    ckpt = torch.load(filepath, map_location="cpu")
+    ckpt = torch.load(filepath, map_location="cpu", weights_only=False)
     model = ssr.SSR_Speech(ckpt["config"])
     model.load_state_dict(ckpt["model"])
     config = vars(model.args)

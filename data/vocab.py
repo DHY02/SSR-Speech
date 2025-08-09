@@ -22,8 +22,9 @@ if __name__ == "__main__":
             data = fi.readlines()
         for x in data:
             x = x.split("\n")[0] if "\n" in x else x
-            phn_vocab.append(x.split(" "))
+            phn_vocab.extend(x.split(" "))
     phn_vocab = set(phn_vocab)
+    phn_vocab.discard('')
     print(len(phn_vocab))
     with open(savepath, "w") as f:
         for i, phn in enumerate(list(phn_vocab)):

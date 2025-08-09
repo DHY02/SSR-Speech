@@ -10,7 +10,7 @@ def parse_args():
     parser.add_argument('--dataset_name', type=str, default=None)
     parser.add_argument('--encodec_model_path', type=str, default=None)
     parser.add_argument('--n_workers', type=int, default=8, help="Number of parallel worker processes")
-    parser.add_argument('--batch_size', type=int, default=64, help="batch size for encodec encoding, decrease it if OOM. This is the sum of batch size *over each gpu*, so increase it if you are using more gpus")
+    parser.add_argument('--batch_size', type=int, default=32, help="batch size for encodec encoding, decrease it if OOM. This is the sum of batch size *over each gpu*, so increase it if you are using more gpus")
     parser.add_argument('--model_sr', type=int, default=16000, help='encodec input audio sample rate')
     parser.add_argument('--downsample_rate', type=int, default=320, help='encodec downsample rate')
     parser.add_argument('--model_code_sr', type=int, default=50, help='encodec model code sample rate')
