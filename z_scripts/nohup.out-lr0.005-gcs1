@@ -1,0 +1,150 @@
+2025-08-09 15:16:56,821 [INFO] main.py:22 || Namespace(seed=42, precision='float16', num_workers=32, resume=True, tb_write_every_n_steps=50, print_every_n_steps=200, val_every_n_steps=15000, lr=0.005, batch_size=100, max_num_tokens=3000, val_max_num_tokens=3000, num_buckets=6, dynamic_batching=1, weight_decay=0.01, warmup_fraction=0.05, num_epochs=10, num_steps=300000, gradient_accumulation_steps=1, gradient_clip_val=0.5, early_stop_step=3000, early_stop_threshold=0.01, optimizer_name='AdamW', reduce_lr_start_step=3000, pseudo_epoch_size=3000, reduce_lr_start_epoch=4, clipping_update_period=600, exp_dir='../exp_results/mixed_music_speech_100/e830M_ssrspeech_finetune', dataset='mixed_music_speech_100', dataset_dir='/root/autodl-tmp/data/mixed_music_speech_100', phn_folder_name='phonemes', encodec_folder_name='wmencodec', manifest_name='manifest', pad_x=0, audio_max_length=15.0, audio_min_length=1.0, text_max_length=400, text_min_length=5.0, encodec_sr=50, drop_long=1, mask_len_min=1, mask_len_max=600, eos=2051, tts_enhanced=1, cfg_enhanced=0, predict_mask_token=1, predict_all=0, reduced_eog=0, special_first=0, n_special=5, codebook_weight='[5,1,0.5,0.1]', max_mask_portion=0.7, max_n_spans=3, shuffle_mask_embedding=0, mask_sample_dist='uniform', min_gap=5, n_codebooks=4, text_vocab_size=100, text_pad_token=100, audio_vocab_size='2048', empty_token=2048, eog=2049, audio_pad_token=2050, sos=2052, mts=2053, d_model=2048, audio_embedding_dim=2048, text_embedding_dropout=0.1, audio_embedding_dropout=0.1, text_positional_embedding_dropout=0.1, audio_positional_embedding_dropout=0.1, trm_dropout=0.15, nhead=16, num_decoder_layers=16, load_model_from='../pretrained_models/SSR-Speech-English/English.pth')
+2025-08-09 15:16:56,821 [INFO] main.py:25 || exp_dir: ../exp_results/mixed_music_speech_100/e830M_ssrspeech_finetune
+2025-08-09 15:16:56,836 [INFO] main.py:22 || Namespace(seed=42, precision='float16', num_workers=32, resume=True, tb_write_every_n_steps=50, print_every_n_steps=200, val_every_n_steps=15000, lr=0.005, batch_size=100, max_num_tokens=3000, val_max_num_tokens=3000, num_buckets=6, dynamic_batching=1, weight_decay=0.01, warmup_fraction=0.05, num_epochs=10, num_steps=300000, gradient_accumulation_steps=1, gradient_clip_val=0.5, early_stop_step=3000, early_stop_threshold=0.01, optimizer_name='AdamW', reduce_lr_start_step=3000, pseudo_epoch_size=3000, reduce_lr_start_epoch=4, clipping_update_period=600, exp_dir='../exp_results/mixed_music_speech_100/e830M_ssrspeech_finetune', dataset='mixed_music_speech_100', dataset_dir='/root/autodl-tmp/data/mixed_music_speech_100', phn_folder_name='phonemes', encodec_folder_name='wmencodec', manifest_name='manifest', pad_x=0, audio_max_length=15.0, audio_min_length=1.0, text_max_length=400, text_min_length=5.0, encodec_sr=50, drop_long=1, mask_len_min=1, mask_len_max=600, eos=2051, tts_enhanced=1, cfg_enhanced=0, predict_mask_token=1, predict_all=0, reduced_eog=0, special_first=0, n_special=5, codebook_weight='[5,1,0.5,0.1]', max_mask_portion=0.7, max_n_spans=3, shuffle_mask_embedding=0, mask_sample_dist='uniform', min_gap=5, n_codebooks=4, text_vocab_size=100, text_pad_token=100, audio_vocab_size='2048', empty_token=2048, eog=2049, audio_pad_token=2050, sos=2052, mts=2053, d_model=2048, audio_embedding_dim=2048, text_embedding_dropout=0.1, audio_embedding_dropout=0.1, text_positional_embedding_dropout=0.1, audio_positional_embedding_dropout=0.1, trm_dropout=0.15, nhead=16, num_decoder_layers=16, load_model_from='../pretrained_models/SSR-Speech-English/English.pth')
+2025-08-09 15:16:56,836 [INFO] main.py:25 || exp_dir: ../exp_results/mixed_music_speech_100/e830M_ssrspeech_finetune
+0 2 2
+1 2 2
+/root/autodl-tmp/SSR-Speech/steps/trainer.py:396: UserWarning: Environment variable TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD detected, since the`weights_only` argument was not explicitly passed to `torch.load`, forcing weights_only=False.
+  sd = torch.load(self.args.load_model_from, map_location="cpu")['model']
+2025-08-09 15:16:58,451 [INFO] trainer.py:379 || SSR_Speech(
+  (text_embedding): TokenEmbedding(
+    (dropout): Dropout(p=0.1, inplace=False)
+    (word_embeddings): Embedding(101, 2048)
+  )
+  (audio_embedding): ModuleList(
+    (0-3): 4 x TokenEmbedding(
+      (dropout): Dropout(p=0.1, inplace=False)
+      (word_embeddings): Embedding(2056, 2048)
+    )
+  )
+  (text_positional_embedding): SinePositionalEmbedding(
+    (dropout): Dropout(p=0.1, inplace=False)
+  )
+  (audio_positional_embedding): SinePositionalEmbedding(
+    (dropout): Dropout(p=0.1, inplace=False)
+  )
+  (decoder): TransformerEncoder(
+    (layers): ModuleList(
+      (0-15): 16 x TransformerEncoderLayer(
+        (self_attn): MultiheadAttention(
+          (out_proj): NonDynamicallyQuantizableLinear(in_features=2048, out_features=2048, bias=True)
+        )
+        (linear1): Linear(in_features=2048, out_features=8192, bias=True)
+        (dropout): Dropout(p=0.15, inplace=False)
+        (linear2): Linear(in_features=8192, out_features=2048, bias=True)
+        (dropout1): Dropout(p=0.15, inplace=False)
+        (dropout2): Dropout(p=0.15, inplace=False)
+        (norm1): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (norm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+  )
+  (predict_layer): ModuleList(
+    (0-3): 4 x Sequential(
+      (0): Linear(in_features=2048, out_features=1024, bias=True)
+      (1): GELU(approximate='none')
+      (2): Linear(in_features=1024, out_features=2056, bias=True)
+    )
+  )
+  (accuracy_metrics): ModuleList(
+    (0-3): 4 x MulticlassAccuracy()
+  )
+)
+2025-08-09 15:16:58,452 [INFO] trainer.py:380 || model parameters
+2025-08-09 15:16:58,453 [INFO] trainer_utils.py:170 || num of parameters of each components:
+2025-08-09 15:16:58,453 [INFO] trainer_utils.py:172 || text_embedding: 0.21m
+2025-08-09 15:16:58,453 [INFO] trainer_utils.py:172 || audio_embedding: 16.84m
+2025-08-09 15:16:58,453 [INFO] trainer_utils.py:172 || text_positional_embedding: 0.00m
+2025-08-09 15:16:58,453 [INFO] trainer_utils.py:172 || audio_positional_embedding: 0.00m
+2025-08-09 15:16:58,453 [INFO] trainer_utils.py:172 || decoder: 805.74m
+2025-08-09 15:16:58,453 [INFO] trainer_utils.py:172 || predict_layer: 16.82m
+/root/autodl-tmp/SSR-Speech/steps/trainer.py:396: UserWarning: Environment variable TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD detected, since the`weights_only` argument was not explicitly passed to `torch.load`, forcing weights_only=False.
+  sd = torch.load(self.args.load_model_from, map_location="cpu")['model']
+2025-08-09 15:17:05,545 [INFO] gigaspeech.py:29 || number of data points for train split: 41929
+2025-08-09 15:17:05,552 [INFO] gigaspeech.py:29 || number of data points for validation split: 4659
+2025-08-09 15:17:05,553 [INFO] trainer_utils.py:316 || max_num_tokens per GPU for train split: 3000
+2025-08-09 15:17:05,570 [INFO] trainer_utils.py:414 || Batch quantisation in latent space
+2025-08-09 15:17:05,570 [INFO] trainer_utils.py:468 || DynamicBatchSampler: Generating dynamic batches
+2025-08-09 15:17:05,664 [INFO] gigaspeech.py:29 || number of data points for train split: 41929
+2025-08-09 15:17:05,671 [INFO] gigaspeech.py:29 || number of data points for validation split: 4659
+2025-08-09 15:17:05,671 [INFO] trainer_utils.py:316 || max_num_tokens per GPU for train split: 3000
+2025-08-09 15:17:05,687 [INFO] trainer_utils.py:414 || Batch quantisation in latent space
+2025-08-09 15:17:05,688 [INFO] trainer_utils.py:468 || DynamicBatchSampler: Generating dynamic batches
+2025-08-09 15:17:05,724 [INFO] trainer_utils.py:400 || len(self._batches): 5524
+2025-08-09 15:17:05,724 [INFO] trainer_utils.py:401 || self.num_replicas: 2
+2025-08-09 15:17:05,724 [INFO] trainer_utils.py:402 || num of batches on each replica: 2762
+2025-08-09 15:17:05,724 [INFO] trainer_utils.py:316 || max_num_tokens per GPU for validation split: 3000
+2025-08-09 15:17:05,726 [INFO] trainer_utils.py:414 || Batch quantisation in latent space
+2025-08-09 15:17:05,726 [INFO] trainer_utils.py:468 || DynamicBatchSampler: Generating dynamic batches
+2025-08-09 15:17:05,742 [INFO] trainer_utils.py:400 || len(self._batches): 617
+2025-08-09 15:17:05,742 [INFO] trainer_utils.py:401 || self.num_replicas: 2
+2025-08-09 15:17:05,742 [INFO] trainer_utils.py:402 || num of batches on each replica: 308
+/root/autodl-tmp/SSR-Speech/steps/trainer.py:47: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  self.scaler = torch.cuda.amp.GradScaler()
+2025-08-09 15:17:05,831 [INFO] trainer_utils.py:400 || len(self._batches): 5524
+2025-08-09 15:17:05,832 [INFO] trainer_utils.py:401 || self.num_replicas: 2
+2025-08-09 15:17:05,832 [INFO] trainer_utils.py:402 || num of batches on each replica: 2762
+2025-08-09 15:17:05,832 [INFO] trainer_utils.py:316 || max_num_tokens per GPU for validation split: 3000
+2025-08-09 15:17:05,833 [INFO] trainer_utils.py:414 || Batch quantisation in latent space
+2025-08-09 15:17:05,833 [INFO] trainer_utils.py:468 || DynamicBatchSampler: Generating dynamic batches
+2025-08-09 15:17:05,848 [INFO] trainer_utils.py:400 || len(self._batches): 617
+2025-08-09 15:17:05,848 [INFO] trainer_utils.py:401 || self.num_replicas: 2
+2025-08-09 15:17:05,848 [INFO] trainer_utils.py:402 || num of batches on each replica: 308
+/root/autodl-tmp/SSR-Speech/steps/trainer.py:47: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  self.scaler = torch.cuda.amp.GradScaler()
+2025-08-09 15:17:06,406 [INFO] trainer.py:53 || max number of tokens per GPU in a training batch: 3000, max number of tokens per GPU in a inference batch: 3000
+2025-08-09 15:17:06,406 [INFO] trainer_utils.py:468 || DynamicBatchSampler: Generating dynamic batches
+2025-08-09 15:17:06,408 [INFO] trainer_utils.py:468 || DynamicBatchSampler: Generating dynamic batches
+/root/autodl-tmp/SSR-Speech/steps/trainer.py:92: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.float16 if self.args.precision=="float16" else torch.float32):
+/root/autodl-tmp/SSR-Speech/steps/trainer.py:92: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.float16 if self.args.precision=="float16" else torch.float32):
+2025-08-09 15:19:52,712 [INFO] trainer.py:182 || {'cur_epoch': '1', 'cur_step': '200', 'total_step': '200/300000', 'lr': '0.0000663', 'ntokens': '18694', 'train_loss': '6.9662 (6.9072)', 'train_top10acc': '0.3799 (0.3804)', 'data_time': '0.0018 (0.0053)', 'train_time': '0.7958 (0.8262)', 'train_top10acc_cb1': '0.5169 (0.5048)', 'train_top10acc_cb2': '0.4207 (0.4088)', 'train_top10acc_cb3': '0.3417 (0.3430)', 'train_top10acc_cb4': '0.2402 (0.2651)'}
+2025-08-09 15:22:38,189 [INFO] trainer.py:182 || {'cur_epoch': '1', 'cur_step': '400', 'total_step': '400/300000', 'lr': '0.0001330', 'ntokens': '19871', 'train_loss': '6.8569 (6.9198)', 'train_top10acc': '0.3867 (0.3779)', 'data_time': '0.0026 (0.0039)', 'train_time': '0.8392 (0.8255)', 'train_top10acc_cb1': '0.5094 (0.5038)', 'train_top10acc_cb2': '0.3989 (0.4044)', 'train_top10acc_cb3': '0.3639 (0.3411)', 'train_top10acc_cb4': '0.2747 (0.2621)'}
+2025-08-09 15:25:23,428 [INFO] trainer.py:182 || {'cur_epoch': '1', 'cur_step': '600', 'total_step': '600/300000', 'lr': '0.0001997', 'ntokens': '18946', 'train_loss': '6.8263 (6.9387)', 'train_top10acc': '0.3902 (0.3759)', 'data_time': '0.0023 (0.0035)', 'train_time': '0.8204 (0.8249)', 'train_top10acc_cb1': '0.5193 (0.5017)', 'train_top10acc_cb2': '0.4240 (0.4026)', 'train_top10acc_cb3': '0.3562 (0.3390)', 'train_top10acc_cb4': '0.2615 (0.2603)'}
+2025-08-09 15:28:08,861 [INFO] trainer.py:182 || {'cur_epoch': '1', 'cur_step': '800', 'total_step': '800/300000', 'lr': '0.0002663', 'ntokens': '18834', 'train_loss': '6.8545 (6.9725)', 'train_top10acc': '0.3726 (0.3717)', 'data_time': '0.0024 (0.0033)', 'train_time': '0.8201 (0.8248)', 'train_top10acc_cb1': '0.5126 (0.4979)', 'train_top10acc_cb2': '0.4094 (0.3984)', 'train_top10acc_cb3': '0.3378 (0.3343)', 'train_top10acc_cb4': '0.2308 (0.2563)'}
+2025-08-09 15:30:52,893 [INFO] trainer.py:182 || {'cur_epoch': '1', 'cur_step': '1000', 'total_step': '1000/300000', 'lr': '0.0003330', 'ntokens': '20128', 'train_loss': '7.4464 (7.0141)', 'train_top10acc': '0.3155 (0.3668)', 'data_time': '0.0025 (0.0031)', 'train_time': '0.8316 (0.8233)', 'train_top10acc_cb1': '0.4257 (0.4932)', 'train_top10acc_cb2': '0.3559 (0.3937)', 'train_top10acc_cb3': '0.2688 (0.3290)', 'train_top10acc_cb4': '0.2118 (0.2515)'}
+2025-08-09 15:33:38,085 [INFO] trainer.py:182 || {'cur_epoch': '1', 'cur_step': '1200', 'total_step': '1200/300000', 'lr': '0.0003997', 'ntokens': '17136', 'train_loss': '7.4368 (7.0629)', 'train_top10acc': '0.3227 (0.3612)', 'data_time': '0.0025 (0.0031)', 'train_time': '0.8139 (0.8233)', 'train_top10acc_cb1': '0.4703 (0.4877)', 'train_top10acc_cb2': '0.3702 (0.3880)', 'train_top10acc_cb3': '0.2624 (0.3230)', 'train_top10acc_cb4': '0.1879 (0.2462)'}
+2025-08-09 15:36:22,431 [INFO] trainer.py:182 || {'cur_epoch': '1', 'cur_step': '1400', 'total_step': '1400/300000', 'lr': '0.0004663', 'ntokens': '19006', 'train_loss': '7.2993 (7.1101)', 'train_top10acc': '0.3374 (0.3561)', 'data_time': '0.0026 (0.0030)', 'train_time': '0.8043 (0.8227)', 'train_top10acc_cb1': '0.4740 (0.4826)', 'train_top10acc_cb2': '0.3470 (0.3831)', 'train_top10acc_cb3': '0.3099 (0.3174)', 'train_top10acc_cb4': '0.2189 (0.2411)'}
+2025-08-09 15:39:06,248 [INFO] trainer.py:182 || {'cur_epoch': '1', 'cur_step': '1600', 'total_step': '1600/300000', 'lr': '0.0005330', 'ntokens': '19541', 'train_loss': '7.4176 (7.1608)', 'train_top10acc': '0.3206 (0.3505)', 'data_time': '0.0023 (0.0029)', 'train_time': '0.8169 (0.8220)', 'train_top10acc_cb1': '0.4391 (0.4768)', 'train_top10acc_cb2': '0.3642 (0.3775)', 'train_top10acc_cb3': '0.2826 (0.3117)', 'train_top10acc_cb4': '0.1966 (0.2361)'}
+2025-08-09 15:41:50,977 [INFO] trainer.py:182 || {'cur_epoch': '1', 'cur_step': '1800', 'total_step': '1800/300000', 'lr': '0.0005997', 'ntokens': '17963', 'train_loss': '7.8768 (7.2102)', 'train_top10acc': '0.2758 (0.3452)', 'data_time': '0.0023 (0.0029)', 'train_time': '0.8000 (0.8219)', 'train_top10acc_cb1': '0.3883 (0.4713)', 'train_top10acc_cb2': '0.3121 (0.3720)', 'train_top10acc_cb3': '0.2371 (0.3061)', 'train_top10acc_cb4': '0.1658 (0.2313)'}
+2025-08-09 15:44:34,748 [INFO] trainer.py:182 || {'cur_epoch': '1', 'cur_step': '2000', 'total_step': '2000/300000', 'lr': '0.0006663', 'ntokens': '18656', 'train_loss': '7.6933 (7.2568)', 'train_top10acc': '0.3054 (0.3401)', 'data_time': '0.0026 (0.0028)', 'train_time': '0.8132 (0.8213)', 'train_top10acc_cb1': '0.4267 (0.4661)', 'train_top10acc_cb2': '0.3458 (0.3670)', 'train_top10acc_cb3': '0.2585 (0.3007)', 'train_top10acc_cb4': '0.1908 (0.2266)'}
+E0809 15:44:45.864992 3191 site-packages/torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: -15) local_rank: 0 (pid: 3255) of binary: /root/miniconda3/envs/ssr/bin/python3.9
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/ssr/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/root/miniconda3/envs/ssr/lib/python3.9/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/root/miniconda3/envs/ssr/lib/python3.9/site-packages/torch/distributed/run.py", line 918, in main
+    run(args)
+  File "/root/miniconda3/envs/ssr/lib/python3.9/site-packages/torch/distributed/run.py", line 909, in run
+    elastic_launch(
+  File "/root/miniconda3/envs/ssr/lib/python3.9/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/root/miniconda3/envs/ssr/lib/python3.9/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+======================================================
+../main.py FAILED
+------------------------------------------------------
+Failures:
+[1]:
+  time      : 2025-08-09_15:44:45
+  host      : autodl-container-b49841aad4-b1b615fa
+  rank      : 1 (local_rank: 1)
+  exitcode  : -15 (pid: 3256)
+  error_file: <N/A>
+  traceback : Signal 15 (SIGTERM) received by PID 3256
+------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-08-09_15:44:45
+  host      : autodl-container-b49841aad4-b1b615fa
+  rank      : 0 (local_rank: 0)
+  exitcode  : -15 (pid: 3255)
+  error_file: <N/A>
+  traceback : Signal 15 (SIGTERM) received by PID 3255
+======================================================
+e830M-sft.sh: line 88: syntax error near unexpected token `}'
+e830M-sft.sh: line 88: `}'

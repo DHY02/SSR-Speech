@@ -437,16 +437,20 @@ class Trainer:
             scheduler = Eden(optimizer, self.args.reduce_lr_start_step, self.args.reduce_lr_start_epoch, warmup_batches=self.total_step * self.args.warmup_fraction)
 
         else:
-            optimizer = AdamW(self.trainables, lr=self.args.lr)
-            warmup_steps = self.total_step * self.args.warmup_fraction
-            def lr_lambda(current_step: int):
-                if current_step < warmup_steps:
-                    return float(current_step) / float(max(1, warmup_steps))
-                return max(
-                    0.0, float(self.total_step - current_step) / float(max(1, self.total_step - warmup_steps))
-                )
-
-            scheduler = LambdaLR(optimizer, lr_lambda, last_epoch=-1)
+            optimizer = AdamW(self.trainables, lr=self.args.lr) 
+            if getattr(self.args, 'fixed_lr', False) or getattr(self.args, 'finetune_mode', False):
+                # For sft
+                scheduler = torch.optim.lr_scheduler.ConstantLR(optimizer, factor=1.0, total_iters=1)
+            else:
+                # warmup + cosine decay for pre-train
+                warmup_steps = self.total_step * self.args.warmup_fraction
+                def lr_lambda(current_step: int):
+                    if current_step < warmup_steps:
+                        return float(current_step) / float(max(1, warmup_steps))
+                    return max(
+                        0.0, float(self.total_step - current_step) / float(max(1, self.total_step - warmup_steps))
+                    )
+                scheduler = LambdaLR(optimizer, lr_lambda, last_epoch=-1)
             
         # if resume
         if self.progress['step'] > 1:

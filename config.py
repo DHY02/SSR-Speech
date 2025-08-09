@@ -25,6 +25,9 @@ def MyParser():
     parser.add_argument("--gradient_clip_val", type=float, default=1.0, help="the value for torch.nn.utils.clip_grad_norm_(), not used if we use ScaledAdam optimizer")
     parser.add_argument("--early_stop_step", type=int, default=3200, help="stop training after this many steps of non-improvement")
     parser.add_argument("--early_stop_threshold", type=float, default=-1.0, help="early stop after the improvement is below this threshold for certain number of steps")
+    parser.add_argument("--finetune_mode", action="store_true", help="enable finetune mode with fixed learning rate")
+    parser.add_argument("--fixed_lr", action="store_true", help="use fixed learning rate instead of scheduler")
+
 
     # optimizer focused
     parser.add_argument("--optimizer_name", type=str, default="AdamW", help="can also use ScaledAdam, in which case we'll also use the Eden scheduler")

@@ -1,20 +1,20 @@
 #!/bin/bash
-export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7,8,9
-export WORLD_SIZE=10
+export CUDA_VISIBLE_DEVICES=0,1
+export WORLD_SIZE=2
 
 dataset=mixed_music_speech_100
 mkdir -p ./logs/${dataset}
 
 exp_root="../exp_results"
 exp_name=e830M_ssrspeech_finetune  # 修改实验名称以区分微调
-dataset_dir="../data/mixed_music_speech_100"
+dataset_dir="/root/autodl-tmp/data/mixed_music_speech_100"
 encodec_codes_folder_name="wmencodec"
-load_model_path="../../../models/SSR-Speech-English/English.pth"
+load_model_path="../pretrained_models/SSR-Speech-English/English.pth"
 
 export CUDA_LAUNCH_BLOCKING=1
 export TORCH_USE_CUDA_DSA=1
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
-
+export TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1 
 torchrun --nnodes=1 --rdzv-backend=c10d --rdzv-endpoint=localhost:41977 --nproc_per_node=${WORLD_SIZE} \
 ../main.py \
 --seed 42 \
@@ -23,16 +23,17 @@ torchrun --nnodes=1 --rdzv-backend=c10d --rdzv-endpoint=localhost:41977 --nproc_
 --resume \
 --tb_write_every_n_steps 50 \
 --print_every_n_steps 200 \
---val_every_n_steps 1000 \
---lr 0.001 \
---max_num_tokens 0 \
---val_max_num_tokens 0 \
---num_buckets 1 \
+--val_every_n_steps 1500 \
+--finetune_mode \
+--lr 0.0001 \
+--max_num_tokens 3000 \
+--val_max_num_tokens 3000 \
+--num_buckets 6 \
 --dynamic_batching 1 \
 --weight_decay 0.01 \
 --warmup_fraction 0.05 \
 --num_steps 30000 \
---gradient_accumulation_steps 1 \
+--gradient_accumulation_steps 16 \
 --gradient_clip_val 0.5 \
 --early_stop_step 3000 \
 --early_stop_threshold 0.01 \
