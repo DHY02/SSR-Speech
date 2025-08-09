@@ -1,3 +1,5 @@
 *.wav
 exp_results/
 data/mixed_music_speech_100
+./nohup.out
+./pretrained_models
